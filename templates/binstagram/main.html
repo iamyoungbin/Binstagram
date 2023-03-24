@@ -64,152 +64,58 @@
     <div style="display: flex; flex-direction: row; text-align: center; justify-content: center; padding-top: 80px; background-color: #FAFAFA">
         <!-- 왼쪽 피드 -->
         <div style="width: 500px; min-width: 500px; margin-right: 300px">
-            <!-- 포스트 -->
-            <div style="border: solid 1px gray; background-color: white; margin-bottom: 20px">
-                <!-- 사용자 아이디 -->
-                <div style="display: flex; flex-direction: row; align-items: center; margin: 5px">
-                    <div class="box" style="width: 40px; height: 40px">
-                        <img class="profile" src="https://upload.wikimedia.org/wikipedia/ko/e/ed/Nyan_cat_250px_frame.PNG">
+            {% for feed in feeds %}
+                <div class="feed_box" style="border: solid 1px gray; background-color: white; margin-bottom: 20px">
+                    <!-- 사용자 아이디 -->
+                    <div style="display: flex; flex-direction: row; align-items: center; margin: 5px">
+                        <div class="box" style="width: 40px; height: 40px">
+                            <img class="profile"
+                                 src="{{ feed.profile_image }}">
+                        </div>
+                        <div style="margin: 10px">
+                            {{ feed.user_id }}
+                        </div>
                     </div>
-                    <div style="margin: 10px">
-                        iamyoungbin
-                    </div>
-                </div>
-                <!-- 이미지 -->
-                <div>
-                    <img style="width: 100%" src="https://wallpaperaccess.com/full/6395155.jpg">
-                </div>
-                <!-- 포스트 아이콘 -->
-                <div style="display: flex; flex-direction: row; justify-content: space-between; margin: 0 10px">
+                    <!-- 이미지 -->
                     <div>
-                        <span class="material-symbols-outlined">favorite</span>
-                        <span class="material-symbols-outlined">chat_bubble</span>
-                        <span class="material-symbols-outlined">send</span>
+                        <img style="width: 100%" src="{{ feed.image }}">
                     </div>
-                    <div>
-                        <span class="material-symbols-outlined">bookmark</span>
+                    <!-- 포스트 아이콘 -->
+                    <div style="display: flex; flex-direction: row; justify-content: space-between; margin: 0 10px">
+                        <div>
+                            <span class="material-symbols-outlined">favorite</span>
+                            <span class="material-symbols-outlined">chat_bubble</span>
+                            <span class="material-symbols-outlined">send</span>
+                        </div>
+                        <div>
+                            <span class="material-symbols-outlined">bookmark</span>
+                        </div>
                     </div>
-                </div>
-                <!-- 댓글 -->
-                <div style="margin-left: 10px; padding: 3px">
-                    <div style="text-align: left; font-size: 14px">
-                        미르 님 <b>외 10명</b>이 좋아합니다.
+                    <!-- 댓글 -->
+                    <div style="margin-left: 10px; padding: 3px">
+                        <div style="text-align: left; font-size: 14px">
+                            미르 님 <b>외 {{ feed.like_count }}명</b>이 좋아합니다.
+                        </div>
+                        <div style="text-align: left; font-size: 16px">
+                            <b>{{ feed.user_id }}</b>&nbsp;{{ feed.content }}
+                        </div>
+                        <div style="text-align: left; font-size: 14px; margin-left: 2px">
+                            <b>asdf</b>&nbsp;갤러거 형제는 화해하라!
+                        </div>
+                        <div style="text-align: left; font-size: 14px; margin-left: 2px">
+                            <b>zxcv</b>&nbsp;리암 섬머소닉오는거는 알고 계신지
+                        </div>
                     </div>
-                    <div style="text-align: left; font-size: 16px">
-                        <b>iamyoungbin</b>&nbsp;live forever
+                    <!-- 댓글 입력 창 -->
+                    <div style="border-top: solid 1px gray">
+                        <input type="text" class="form-control" style="box-shadow: none; border: none; outline: none"
+                               placeholder="댓글 달기">
                     </div>
-                    <div style="text-align: left; font-size: 14px; margin-left: 2px">
-                        <b>asdf</b>&nbsp;갤러거 형제는 화해하라!
-                    </div>
-                    <div style="text-align: left; font-size: 14px; margin-left: 2px">
-                        <b>zxcv</b>&nbsp;리암 섬머소닉오는거는 알고 계신지
-                    </div>
-                </div>
-                <!-- 댓글 입력 창 -->
-                <div style="border-top: solid 1px gray">
-                     <input type="text" class="form-control" style="box-shadow: none; border: none; outline: none" placeholder="댓글 달기">
-                </div>
 
 
-            </div>
+                </div>
+            {% endfor %}
 
-            <!-- 포스트 -->
-            <div style="border: solid 1px gray; background-color: white; margin-bottom: 20px">
-                <!-- 사용자 아이디 -->
-                <div style="display: flex; flex-direction: row; align-items: center; margin: 5px">
-                    <div class="box" style="width: 40px; height: 40px">
-                        <img class="profile" src="https://upload.wikimedia.org/wikipedia/ko/e/ed/Nyan_cat_250px_frame.PNG">
-                    </div>
-                    <div style="margin: 10px">
-                        iamyoungbin
-                    </div>
-                </div>
-                <!-- 이미지 -->
-                <div>
-                    <img style="width: 100%" src="https://wallpaperaccess.com/full/6395155.jpg">
-                </div>
-                <!-- 포스트 아이콘 -->
-                <div style="display: flex; flex-direction: row; justify-content: space-between; margin: 0 10px">
-                    <div>
-                        <span class="material-symbols-outlined">favorite</span>
-                        <span class="material-symbols-outlined">chat_bubble</span>
-                        <span class="material-symbols-outlined">send</span>
-                    </div>
-                    <div>
-                        <span class="material-symbols-outlined">bookmark</span>
-                    </div>
-                </div>
-                <!-- 댓글 -->
-                <div style="margin-left: 10px; padding: 3px">
-                    <div style="text-align: left; font-size: 14px">
-                        미르 님 <b>외 10명</b>이 좋아합니다.
-                    </div>
-                    <div style="text-align: left; font-size: 16px">
-                        <b>iamyoungbin</b>&nbsp;live forever
-                    </div>
-                    <div style="text-align: left; font-size: 14px; margin-left: 2px">
-                        <b>asdf</b>&nbsp;갤러거 형제는 화해하라!
-                    </div>
-                    <div style="text-align: left; font-size: 14px; margin-left: 2px">
-                        <b>zxcv</b>&nbsp;리암 섬머소닉오는거는 알고 계신지
-                    </div>
-                </div>
-                <!-- 댓글 입력 창 -->
-                <div style="border-top: solid 1px gray">
-                     <input type="text" class="form-control" style="box-shadow: none; border: none; outline: none" placeholder="댓글 달기">
-                </div>
-
-
-            </div>
-
-            <!-- 포스트 -->
-            <div style="border: solid 1px gray; background-color: white; margin-bottom: 20px">
-                <!-- 사용자 아이디 -->
-                <div style="display: flex; flex-direction: row; align-items: center; margin: 5px">
-                    <div class="box" style="width: 40px; height: 40px">
-                        <img class="profile" src="https://upload.wikimedia.org/wikipedia/ko/e/ed/Nyan_cat_250px_frame.PNG">
-                    </div>
-                    <div style="margin: 10px">
-                        iamyoungbin
-                    </div>
-                </div>
-                <!-- 이미지 -->
-                <div>
-                    <img style="width: 100%" src="https://wallpaperaccess.com/full/6395155.jpg">
-                </div>
-                <!-- 포스트 아이콘 -->
-                <div style="display: flex; flex-direction: row; justify-content: space-between; margin: 0 10px">
-                    <div>
-                        <span class="material-symbols-outlined">favorite</span>
-                        <span class="material-symbols-outlined">chat_bubble</span>
-                        <span class="material-symbols-outlined">send</span>
-                    </div>
-                    <div>
-                        <span class="material-symbols-outlined">bookmark</span>
-                    </div>
-                </div>
-                <!-- 댓글 -->
-                <div style="margin-left: 10px; padding: 3px">
-                    <div style="text-align: left; font-size: 14px">
-                        미르 님 <b>외 10명</b>이 좋아합니다.
-                    </div>
-                    <div style="text-align: left; font-size: 16px">
-                        <b>iamyoungbin</b>&nbsp;live forever
-                    </div>
-                    <div style="text-align: left; font-size: 14px; margin-left: 2px">
-                        <b>asdf</b>&nbsp;갤러거 형제는 화해하라!
-                    </div>
-                    <div style="text-align: left; font-size: 14px; margin-left: 2px">
-                        <b>zxcv</b>&nbsp;리암 섬머소닉오는거는 알고 계신지
-                    </div>
-                </div>
-                <!-- 댓글 입력 창 -->
-                <div style="border-top: solid 1px gray">
-                     <input type="text" class="form-control" style="box-shadow: none; border: none; outline: none" placeholder="댓글 달기">
-                </div>
-
-
-            </div>
 
         </div>
         <!-- 오른쪽 피드 -->
