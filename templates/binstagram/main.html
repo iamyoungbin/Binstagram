@@ -32,6 +32,33 @@
             height: 100%;
             object-fit: cover;
         }
+
+        .modal_overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
+        }
+
+        .modal_window {
+            background: white;
+            backdrop-filter: blur(13.5px);
+            -webkit-backdrop-filter: blur(13.5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 800px;
+            height: 600px;
+            position: relative;
+            padding: 10px;
+        }
     </style>
 
     <!-- Bootstrap CSS -->
@@ -40,6 +67,9 @@
 
     <!-- google material icon -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+
+    <!-- JQuery -->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
     <!-- 상단 네비게이션 -->
@@ -54,7 +84,7 @@
             <div>
                 <span class="material-symbols-outlined">home</span>
                 <span class="material-symbols-outlined">send</span>
-                <span class="material-symbols-outlined">add_box</span>
+                <span id="nav_bar_add_box" class="material-symbols-outlined">add_box</span>
                 <span class="material-symbols-outlined">explore</span>
                 <span class="material-symbols-outlined">favorite</span>
             </div>
@@ -195,8 +225,128 @@
 
     </div>
 
+
+    <!-- 사진 업로드 모달 창 -->
+    <div id="first_modal" class="modal_overlay">
+        <div class="modal_window">
+            <div style="border-bottom: solid 1px gray; display: flex; flex-direction: row; justify-content: space-between">
+                <div style="width: 40px">
+                    <!-- 공백 -->
+                </div>
+                <div>
+                    새 이미지
+                </div>
+                <div style="width: 40px">
+                    <span class="material-symbols-outlined">close</span>
+                </div>
+            </div>
+            <div class="image_upload_space" style="width: 780px; height: 540px; margin-top: 10px">
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 이미지 정보 입력 모달 창-->
+    <div id="second_modal" class="modal_overlay">
+        <div class="modal_window">
+            <div style="border-bottom: solid 1px gray; display: flex; flex-direction: row; justify-content: space-between">
+                <div style="width: 40px">
+                    <!-- 공백 -->
+                </div>
+                <div>
+                    새 이미지
+                </div>
+                <div style="width: 40px">
+                    <span class="material-symbols-outlined">close</span>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: row">
+                <div class="image_upload_space" style="width: 500px; height: 540px; margin-top: 10px"></div>
+                <div style="border-left: solid 1px gray">
+                    <div>
+                        <textarea class="form-control" style="width: 275px; height: 400px"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary" style="width: 100%">공유하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        <!-- +버튼을 누르면 모달 창이 뜨게 하는 함수 -->
+        $('#nav_bar_add_box').click(function (){
+            $('#first_modal').css({
+                display: 'flex',
+            });
+
+            $(document.body).css({
+                overflow: 'hidden',
+            });
+        });
+
+        <!-- 이미지 업로드 -->
+        $('.image_upload_space')
+            .on("dragover", dragOver)
+            .on("dragleave", dragOver)
+            .on("drop", uploadFiles);
+
+        function dragOver(e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            if (e.type == "dragover") {
+                $(e.target).css({
+                    "background-color": "black",
+                    "outline-offset": "-20px"
+                });
+            } else {
+                $(e.target).css({
+                    "background-color": "gray",
+                    "outline-offset": "-10px"
+                });
+            }
+        }
+
+        function uploadFiles(e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            e.dataTransfer = e.originalEvent.dataTransfer; //2
+            var files = e.target.files || e.dataTransfer.files;
+
+            if (files.length > 1) {
+                alert('하나만 올려라.');
+                return;
+            }
+
+            if (files[0].type.match(/image.*/)) {
+                $('#first_modal').css({
+                    display: 'none',
+                });
+                $('#second_modal').css({
+                    display: 'flex',
+                });
+
+                $('.image_upload_space').css({
+                    "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
+                    "outline": "none",
+                    "background-size": "100%",
+                    "background-repeat": "no-repeat",
+                    "background-position": "center",
+                });
+            } else {
+                alert('이미지가 아닙니다.');
+                return;
+}
+
+        }
+    </script>
+
+
+    <!--
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
             crossorigin="anonymous"></script>
+     -->
 </body>
 </html>
