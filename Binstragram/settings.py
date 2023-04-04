@@ -130,3 +130,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'		# ex) /media/photo1.png
 # 업로드 된 파일을 저장할 디렉토리 경로 == 프로젝트 기본경로 + 'media'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# 커스텀 유저 모델 사용
+AUTH_USER_MODEL = 'user.User'
