@@ -4,7 +4,7 @@ from uuid import uuid4
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from user.models import User
 from Binstragram.settings import MEDIA_ROOT
 from .models import Feed
 
@@ -13,7 +13,19 @@ class Main(APIView):
     def get(self, request):
         feed_list = Feed.objects.all().order_by('-id')  # == select * from Feed; (sql)
 
-        return render(request, "binstagram/main.html", context=dict(feeds=feed_list))
+        print(request.session['email'])
+        email = request.session['email']
+        # 로그인 없이 메인에 접근하는 경우
+        if email is None:
+            return render(request, "user/login.html")
+
+        user = User.objects.filter(email=request.session['email']).first()
+
+        # 회원이 아닌 이메일 주소인 경우
+        if user is None:
+            return render(request, "user/login.html")
+
+        return render(request, "binstagram/main.html", context=dict(feeds=feed_list, user=user))
 
 class UploadFeed(APIView):
     def post(self, request):
