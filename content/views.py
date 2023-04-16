@@ -13,8 +13,7 @@ class Main(APIView):
     def get(self, request):
         feed_list = Feed.objects.all().order_by('-id')  # == select * from Feed; (sql)
 
-        print(request.session['email'])
-        email = request.session['email']
+        email = request.session.get('email', None)
         # 로그인 없이 메인에 접근하는 경우
         if email is None:
             return render(request, "user/login.html")
@@ -46,3 +45,19 @@ class UploadFeed(APIView):
         Feed.objects.create(image=image, content=content, user_id=user_id, profile_image=profile_image, like_count=0)
 
         return Response(status=200)
+
+class Profile(APIView):
+    def get(self, request):
+        email = request.session.get('email', None)
+        # 로그인 없이 메인에 접근하는 경우
+        if email is None:
+            return render(request, "user/login.html")
+
+        user = User.objects.filter(email=request.session['email']).first()
+
+        # 회원이 아닌 이메일 주소인 경우
+        if user is None:
+            return render(request, "user/login.html")
+
+        return render(request, "content/profile.html", context=dict(user=user))
+
