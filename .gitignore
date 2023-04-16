@@ -2,6 +2,7 @@ __pycache__
 dq.sqlite3
 /static
 /media
+media
 venv
 .venv
 .idea
