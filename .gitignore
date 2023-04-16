@@ -1,5 +1,10 @@
+*.log
+*.pot
+*.pyc
 __pycache__
 dq.sqlite3
+db.sqlite3-journal
+local_settings.py
 /static
 /media
 media
@@ -7,3 +12,4 @@ venv
 .venv
 .idea
 .vscode
+*.csv
