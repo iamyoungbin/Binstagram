@@ -121,7 +121,7 @@
                                  src="{% get_media_prefix %}{{ feed.profile_image }}">
                         </div>
                         <div style="margin: 10px">
-                            {{ feed.user_id }}
+                            {{ feed.nickname }}
                         </div>
                     </div>
                     <!-- 이미지 -->
@@ -145,19 +145,23 @@
                             미르 님 <b>외 {{ feed.like_count }}명</b>이 좋아합니다.
                         </div>
                         <div style="text-align: left; font-size: 16px">
-                            <b>{{ feed.user_id }}</b>&nbsp;{{ feed.content }}
+                            <b>{{ feed.nickname }}</b>&nbsp;{{ feed.content }}
                         </div>
-                        <div style="text-align: left; font-size: 14px; margin-left: 2px">
-                            <b>asdf</b>&nbsp;갤러거 형제는 화해하라!
-                        </div>
-                        <div style="text-align: left; font-size: 14px; margin-left: 2px">
-                            <b>zxcv</b>&nbsp;리암 섬머소닉오는거는 알고 계신지
+                        <div id="reply_list_{{ feed.id }}">
+                            {% for reply in feed.reply_list %}
+                                <div style="text-align: left; font-size: 14px; margin-left: 2px">
+                                    <b>{{ reply.nickname }}</b>&nbsp;{{ reply.reply_content }}
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
                     <!-- 댓글 입력 창 -->
-                    <div style="border-top: solid 1px gray">
-                        <input type="text" class="form-control" style="box-shadow: none; border: none; outline: none"
+                    <div style="display: flex; flex-direction: row; align-items: center; border-top: solid 1px gray">
+                        <input id="reply_{{ feed.id }}" type="text" class="form-control" style="box-shadow: none; border: none; outline: none"
                                placeholder="댓글 달기">
+                        <div feed_id="{{ feed.id }}" class="upload_reply" style="width: 50px; color: cornflowerblue; font-weight: bold">
+                            게시
+                        </div>
                     </div>
 
 
@@ -294,6 +298,38 @@
         <!-- file 전역변수 선언 -->
         let files;
 
+        $('.upload_reply').click(function (e){
+            let feed_id = e.target.attributes.getNamedItem('feed_id').value;
+            let reply_id = 'reply_' + feed_id;
+            let reply_content = $('#'+reply_id).val();
+
+            if (reply_content.length <= 0){
+                alert("No contents");
+                return 0;
+            }
+
+            $.ajax({
+                url: "/content/reply/",
+                data: {
+                    feed_id: feed_id,
+                    reply_content: reply_content,
+                },
+                method: "POST",
+                success: function (data) {
+                    console.log("SUCCESS");
+                    $('#reply_list_'+feed_id).append('<div style="text-align: left; font-size: 14px; margin-left: 2px"><b>{{ user.nickname }}' + '</b>&nbsp;' + reply_content + '</div>');
+                    $('#'+reply_id).val('');
+                },
+                error: function (request, status, error) {
+                    console.log("ERROR");
+                },
+                <!-- complete는 성공 실패 관련없이 작업 수행 완료시 실행 -->
+                complete: function () {
+                    console.log("DONE");
+                }
+            });
+        });
+
         $('.modal_close').click(function (){
             $('#first_modal').css({
                 display: 'none'
@@ -377,8 +413,6 @@
             let file = files[0];
             let image = files[0].name;
             let content = $('#feed_create_content').val();
-            let user_id = "{{ user.nickname }}";
-            let profile_image ="{{ user.profile_image }}";
 
             <!-- Restful API 에서 단순 데이터는 json, 파일 데이터는 form data 형태로 주고 받는다. -->
 
@@ -386,8 +420,6 @@
             fd.append('file', file);
             fd.append('image', image);
             fd.append('content', content);
-            fd.append('user_id', user_id);
-            fd.append('profile_image', profile_image);
 
             $.ajax({
                 url: "/content/upload/",

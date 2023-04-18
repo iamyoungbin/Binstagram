@@ -257,8 +257,6 @@
             let file = files[0];
             let image = files[0].name;
             let content = $('#feed_create_content').val();
-            let user_id = "{{ user.nickname }}";
-            let profile_image ="{{ user.profile_image }}";
 
             <!-- Restful API 에서 단순 데이터는 json, 파일 데이터는 form data 형태로 주고 받는다. -->
 
@@ -266,8 +264,6 @@
             fd.append('file', file);
             fd.append('image', image);
             fd.append('content', content);
-            fd.append('user_id', user_id);
-            fd.append('profile_image', profile_image);
 
             $.ajax({
                 url: "/content/upload/",
