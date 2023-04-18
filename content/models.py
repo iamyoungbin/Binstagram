@@ -7,7 +7,7 @@ class Feed(models.Model):
     email = models.EmailField(default='')
     # profile_image = models.TextField()  # 프로필 이미지
     # user_id = models.TextField()    # 글쓴이
-    like_count = models.IntegerField() # 좋아요 수
+    # like_count = models.IntegerField() # 좋아요 수
 
 class Like(models.Model):
     feed_id = models.IntegerField(default=0)

@@ -86,7 +86,7 @@
             <!-- nav icons -->
             <div style="display: flex">
                 <a href="/main/" style="color: black"><span class="material-symbols-outlined" style="padding-right: 10px">home</span></a>
-                <span id="nav_bar_add_box" class="material-symbols-outlined" style="padding-right: 10px">add_box</span>
+                <span id="nav_bar_add_box" class="material-symbols-outlined" style="padding-right: 10px; cursor: pointer;">add_box</span>
 
                 <div class="dropdown">
                     <a href="#" role="button" data-bs-toggle="dropdown"
@@ -134,6 +134,46 @@
         </div>
     </div>
 
+    <!-- 피드 선택 바 -->
+    <div style="border-top: solid 2px rgba(50, 50, 50, 0.1); width: 100%;">
+        <div style="display: flex; flex-direction: row; justify-content: center;">
+            <div id="button_feed_list" style="display:flex; flex-direction: row; align-items: center; margin: 10px 30px; cursor: pointer;"><span class="material-symbols-outlined">calendar_view_month</span>&nbsp;게시물</div>
+            <div id="button_liked_feed_list" style="display:flex; flex-direction: row; align-items: center; margin: 10px 30px; cursor: pointer;"><span class="material-symbols-outlined">favorite</span>&nbsp;게시물</div>
+            <div id="button_marked_feed_list" style="display:flex; flex-direction: row; align-items: center; margin: 10px 30px; cursor: pointer;"><span class="material-symbols-outlined">bookmark</span>&nbsp;게시물</div>
+        </div>
+    </div>
+
+    <!-- 내 피드 리스트 -->
+    <div id="feed_list" style="width: 100%; min-width: 1100px; display: flex; justify-content: center">
+        <div style="width: 1100px; display: flex; flex-direction: row; flex-wrap: wrap;">
+            {% for feed in feed_list %}
+                <div style="margin: 5px; width: 350px; height: 250px; background-color: #FAFAFA">
+                    <img style="width: 350px; height: 250px;object-fit: contain;" src="{% get_media_prefix %}{{ feed.image }}">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- 좋아요 피드 리스트 -->
+    <div id="liked_feed_list" style="width: 100%; min-width: 1100px; display: none; justify-content: center">
+        <div style="width: 1100px; display: flex; flex-direction: row; flex-wrap: wrap;">
+            {% for feed in liked_feed_list %}
+                <div style="margin: 5px; width: 350px; height: 250px; background-color: #FAFAFA">
+                    <img style="width: 350px; height: 250px;object-fit: contain;" src="{% get_media_prefix %}{{ feed.image }}">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- 북마크 피드 리스트 -->
+    <div id="marked_feed_list" style="width: 100%; min-width: 1100px; display: none; justify-content: center">
+        <div style="width: 1100px; display: flex; flex-direction: row; flex-wrap: wrap;">
+            {% for feed in marked_feed_list %}
+                <div style="margin: 5px; width: 350px; height: 250px; background-color: #FAFAFA">
+                    <img style="width: 350px; height: 250px;object-fit: contain;" src="{% get_media_prefix %}{{ feed.image }}">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
     <!-- 사진 업로드 모달 창 -->
     <div id="first_modal" class="modal_overlay">
         <div class="modal_window">
@@ -145,7 +185,7 @@
                     새 이미지
                 </div>
                 <div style="width: 40px">
-                    <span class="material-symbols-outlined">close</span>
+                    <span class="material-symbols-outlined modal_close">close</span>
                 </div>
             </div>
             <div class="image_upload_space" style="width: 780px; height: 540px; margin-top: 10px">
@@ -165,7 +205,7 @@
                     새 이미지
                 </div>
                 <div style="width: 40px">
-                    <span class="material-symbols-outlined">close</span>
+                    <span class="material-symbols-outlined modal_close">close</span>
                 </div>
             </div>
             <div style="display: flex; flex-direction: row">
@@ -184,6 +224,41 @@
         <!-- file 전역변수 선언 -->
         let files;
 
+        <!-- 피드 리스트 호출 -->
+        $('#button_feed_list').click(function (){
+            $('#feed_list').css({
+                display : 'flex'
+            })
+            $('#liked_feed_list').css({
+                display : 'none'
+            })
+            $('#marked_feed_list').css({
+                display : 'none'
+            })
+        });
+        $('#button_liked_feed_list').click(function (){
+            $('#feed_list').css({
+                display : 'none'
+            })
+            $('#liked_feed_list').css({
+                display : 'flex'
+            })
+            $('#marked_feed_list').css({
+                display : 'none'
+            })
+        });
+        $('#button_marked_feed_list').click(function (){
+            $('#feed_list').css({
+                display : 'none'
+            })
+            $('#liked_feed_list').css({
+                display : 'none'
+            })
+            $('#marked_feed_list').css({
+                display : 'flex'
+            })
+        });
+
         <!-- +버튼을 누르면 모달 창이 뜨게 하는 함수 -->
         $('#nav_bar_add_box').click(function (){
             $('#first_modal').css({
@@ -193,6 +268,20 @@
             $(document.body).css({
                 overflow: 'hidden',
             });
+        });
+
+        <!-- 모달 닫기 -->
+        $('.modal_close').click(function (){
+            $('#first_modal').css({
+                display: 'none'
+            });
+            $('#second_modal').css({
+                display: 'none'
+            });
+            $('.image_upload_space').css({
+                    "background-image": "None",
+                    "background-color": "white",
+                });
         });
 
         <!-- 모달 창에 이미지 업로드 -->
@@ -212,12 +301,13 @@
                 });
             } else {
                 $(e.target).css({
-                    "background-color": "gray",
+                    "background-color": "white",
                     "outline-offset": "-10px"
                 });
             }
         }
 
+        <!-- 이미지 업로드 시 모달 css 변경 -->
         function uploadFiles(e) {
             e.stopPropagation();
             e.preventDefault();
@@ -285,10 +375,12 @@
             });
         });
 
+        <!-- 프로필 사진 변경 버튼 누를 시 숨겨져 있는 input 폼 실행 -->
         $('#button_profile_upload').click(function (){
             $('#input_file_upload').click();
         });
 
+        <!-- 프로필 파일 변경 -->
         function profile_upload(){
             let file = $('#input_file_upload')[0].files[0];
             let email = "{{ user.email }}";

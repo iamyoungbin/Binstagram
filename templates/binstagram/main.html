@@ -86,7 +86,7 @@
             <!-- nav icons -->
             <div style="display: flex">
                 <a href="/main/" style="color: black"><span class="material-symbols-outlined" style="padding-right: 10px">home</span></a>
-                <span id="nav_bar_add_box" class="material-symbols-outlined" style="padding-right: 10px">add_box</span>
+                <span id="nav_bar_add_box" class="material-symbols-outlined" style="padding-right: 10px; cursor:pointer;">add_box</span>
 
                 <div class="dropdown">
                     <a href="#" role="button" data-bs-toggle="dropdown"
@@ -131,12 +131,24 @@
                     <!-- 포스트 아이콘 -->
                     <div style="display: flex; flex-direction: row; justify-content: space-between; margin: 0 10px">
                         <div>
-                            <span class="material-symbols-outlined">favorite</span>
-                            <span class="material-symbols-outlined">chat_bubble</span>
-                            <span class="material-symbols-outlined">send</span>
+                            <span id="favorite_{{ feed.id }}" feed_id={{ feed.id }} class="favorite material-symbols-outlined" style="color: red; cursor: pointer;">
+                                {% if feed.is_liked %}
+                                    hr_resting
+                                {% else %}
+                                    favorite
+                                {% endif %}
+                            </span>
+                            {% comment %}<span class="material-symbols-outlined">chat_bubble</span>
+                            <span class="material-symbols-outlined">send</span>{% endcomment %}
                         </div>
                         <div>
-                            <span class="material-symbols-outlined">bookmark</span>
+                            <span id="bookmark_{{ feed.id }}" feed_id={{ feed.id }} class="bookmark material-symbols-outlined" style="cursor: pointer;">
+                                {% if feed.is_bookmarked %}
+                                    beenhere
+                                {% else %}
+                                    bookmark
+                                {% endif %}
+                            </span>
                         </div>
                     </div>
                     <!-- 댓글 -->
@@ -298,6 +310,7 @@
         <!-- file 전역변수 선언 -->
         let files;
 
+        <!-- 댓글 업로드 -->
         $('.upload_reply').click(function (e){
             let feed_id = e.target.attributes.getNamedItem('feed_id').value;
             let reply_id = 'reply_' + feed_id;
@@ -330,6 +343,74 @@
             });
         });
 
+        <!-- 피드 좋아요 및 취소 -->
+        $('.favorite').click(function (e){
+            let favorite_id = e.target.id;
+            let favorite_state = $.trim($('#'+favorite_id).html());
+            let feed_id = e.target.attributes.getNamedItem('feed_id').value;
+
+            if (favorite_state == "favorite"){
+                $.trim($('#'+favorite_id).html("hr_resting"));
+            }
+            else{
+                $.trim($('#'+favorite_id).html("favorite"));
+            }
+
+            $.ajax({
+                url: "/content/like/",
+                data: {
+                    feed_id: feed_id,
+                    favorite_state: favorite_state,
+                },
+                method: "POST",
+                success: function (data) {
+                    console.log("SUCCESS");
+                },
+                error: function (request, status, error) {
+                    console.log("ERROR");
+                },
+                <!-- complete는 성공 실패 관련없이 작업 수행 완료시 실행 -->
+                complete: function () {
+                    console.log("DONE");
+                }
+            });
+        });
+
+        <!-- 북마크 및 해제 -->
+        $('.bookmark').click(function (e){
+            let bookmark_id = e.target.id;
+            let bookmark_state = $.trim($('#'+bookmark_id).html());
+            let feed_id = e.target.attributes.getNamedItem('feed_id').value;
+
+            if (bookmark_state == "bookmark"){
+                $.trim($('#'+bookmark_id).html("beenhere"));
+            }
+            else{
+                $.trim($('#'+bookmark_id).html("bookmark"));
+            }
+
+            console.log(bookmark_state)
+            $.ajax({
+                url: "/content/bookmark/",
+                data: {
+                    feed_id: feed_id,
+                    bookmark_state: bookmark_state,
+                },
+                method: "POST",
+                success: function (data) {
+                    console.log("SUCCESS");
+                },
+                error: function (request, status, error) {
+                    console.log("ERROR");
+                },
+                <!-- complete는 성공 실패 관련없이 작업 수행 완료시 실행 -->
+                complete: function () {
+                    console.log("DONE");
+                }
+            });
+        });
+
+        <!-- 모달 닫기 -->
         $('.modal_close').click(function (){
             $('#first_modal').css({
                 display: 'none'
@@ -337,9 +418,11 @@
             $('#second_modal').css({
                 display: 'none'
             });
+            $('.image_upload_space').css({
+                    "background-image": "None",
+                    "background-color": "white",
+                });
         });
-
-
 
         <!-- +버튼을 누르면 모달 창이 뜨게 하는 함수 -->
         $('#nav_bar_add_box').click(function (){
@@ -375,6 +458,7 @@
             }
         }
 
+        <!-- 이미지 업로드 시 모달 css 변경 -->
         function uploadFiles(e) {
             e.stopPropagation();
             e.preventDefault();
