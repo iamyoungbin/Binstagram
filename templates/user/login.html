@@ -48,12 +48,13 @@
                 },
                 method: "POST",
                 success: function (data){
-                    console.log("SUCCESS");
-                    alert("로그인 성공!.");
+                    alert("로그인 성공!");
                     location.replace('/main/');
                 },
                 error: function (request, status, error){
-                    console.log("ERROR");
+                    alert("로그인 실패");
+                    $('#input_email').val('');
+                    $('#input_password').val('');
                 },
                 <!-- complete는 성공 실패 관련없이 작업 수행 완료시 실행 -->
                 complete: function (){

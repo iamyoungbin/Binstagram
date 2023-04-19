@@ -23,17 +23,18 @@ class Main(APIView):
         if user is None:
             return render(request, "user/login.html")
 
+        print(email)
         feed_object_list = Feed.objects.all().order_by('-id')  # == select * from Feed; (sql)
         feed_list = []
 
         for feed in feed_object_list:
-            user = User.objects.filter(email=feed.email).first()
+            feed_user = User.objects.filter(email=feed.email).first()
             reply_object_list = Reply.objects.filter(feed_id=feed.id)
             reply_list = []
             for reply in reply_object_list:
-                user = User.objects.filter(email=reply.email).first()
+                reply_user = User.objects.filter(email=reply.email).first()
                 reply_list.append(dict(reply_content=reply.reply_content,
-                                       nickname=user.nickname))
+                                       nickname=reply_user.nickname))
 
             like_count = Like.objects.filter(feed_id=feed.id, is_like=True).count()
             is_liked = Like.objects.filter(feed_id=feed.id, email=email, is_like=True).exists()
@@ -43,8 +44,8 @@ class Main(APIView):
                                   image=feed.image,
                                   content=feed.content,
                                   like_count=like_count,
-                                  profile_image=user.profile_image,
-                                  nickname=user.nickname,
+                                  profile_image=feed_user.profile_image,
+                                  nickname=feed_user.nickname,
                                   reply_list=reply_list,
                                   is_liked=is_liked,
                                   is_bookmarked=is_bookmarked,))
