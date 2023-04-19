@@ -38,8 +38,6 @@ def get_secret(setting, secrets=secrets):
 
 SECRET_KEY = get_secret("BINSTA_SECRET_KEY")
 
-# SECRET_KEY = 'django-insecure-qvau=vtk8otmzjd5)ofs7yurshofn0ub4558u%a46t^px!e#3j'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
