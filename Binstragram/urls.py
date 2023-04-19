@@ -20,7 +20,6 @@ from django.urls import path, include
 from content.views import Main
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('main/', Main.as_view()),
     # path('content/upload/', UploadFeed.as_view()),
     path('content/', include('content.urls')),

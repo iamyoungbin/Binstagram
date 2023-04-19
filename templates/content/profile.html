@@ -137,9 +137,9 @@
     <!-- 피드 선택 바 -->
     <div style="border-top: solid 2px rgba(50, 50, 50, 0.1); width: 100%;">
         <div style="display: flex; flex-direction: row; justify-content: center;">
-            <div id="button_feed_list" style="display:flex; flex-direction: row; align-items: center; margin: 10px 30px; cursor: pointer;"><span class="material-symbols-outlined">calendar_view_month</span>&nbsp;게시물</div>
-            <div id="button_liked_feed_list" style="display:flex; flex-direction: row; align-items: center; margin: 10px 30px; cursor: pointer;"><span class="material-symbols-outlined">favorite</span>&nbsp;게시물</div>
-            <div id="button_marked_feed_list" style="display:flex; flex-direction: row; align-items: center; margin: 10px 30px; cursor: pointer;"><span class="material-symbols-outlined">bookmark</span>&nbsp;게시물</div>
+            <div id="button_feed_list" style="display:flex; flex-direction: row; align-items: center; margin: 10px 30px; cursor: pointer; font-weight: bold;"><span class="material-symbols-outlined">calendar_view_month</span>&nbsp;내 게시물</div>
+            <div id="button_liked_feed_list" style="display:flex; flex-direction: row; align-items: center; margin: 10px 30px; cursor: pointer;"><span class="material-symbols-outlined">favorite</span>&nbsp;좋아요</div>
+            <div id="button_marked_feed_list" style="display:flex; flex-direction: row; align-items: center; margin: 10px 30px; cursor: pointer;"><span class="material-symbols-outlined">bookmark</span>&nbsp;북마크</div>
         </div>
     </div>
 
@@ -228,35 +228,63 @@
         $('#button_feed_list').click(function (){
             $('#feed_list').css({
                 display : 'flex'
-            })
+            });
             $('#liked_feed_list').css({
                 display : 'none'
-            })
+            });
             $('#marked_feed_list').css({
                 display : 'none'
-            })
+            });
+            $('#button_feed_list').css({
+                'font-weight': 'bold'
+            });
+            $('#button_liked_feed_list').css({
+                'font-weight': 'normal'
+            });
+            $('#button_marked_feed_list').css({
+                'font-weight': 'normal'
+            });
+
         });
         $('#button_liked_feed_list').click(function (){
             $('#feed_list').css({
                 display : 'none'
-            })
+            });
             $('#liked_feed_list').css({
                 display : 'flex'
-            })
+            });
             $('#marked_feed_list').css({
                 display : 'none'
-            })
+            });
+            $('#button_feed_list').css({
+                'font-weight': 'normal'
+            });
+            $('#button_liked_feed_list').css({
+                'font-weight': 'bold'
+            });
+            $('#button_marked_feed_list').css({
+                'font-weight': 'normal'
+            });
         });
         $('#button_marked_feed_list').click(function (){
             $('#feed_list').css({
                 display : 'none'
-            })
+            });
             $('#liked_feed_list').css({
                 display : 'none'
-            })
+            });
             $('#marked_feed_list').css({
                 display : 'flex'
-            })
+            });
+            $('#button_feed_list').css({
+                'font-weight': 'normal'
+            });
+            $('#button_liked_feed_list').css({
+                'font-weight': 'normal'
+            });
+            $('#button_marked_feed_list').css({
+                'font-weight': 'bold'
+            });
         });
 
         <!-- +버튼을 누르면 모달 창이 뜨게 하는 함수 -->
