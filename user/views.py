@@ -2,7 +2,7 @@ import os
 from uuid import uuid4
 
 from django.contrib.auth.hashers import make_password
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from Binstragram.settings import MEDIA_ROOT
@@ -44,7 +44,7 @@ class Logout(APIView):
     def get(self, request):
         # 세션 정보 초기화
         request.session.flush()
-        return render(request, 'user/login.html')
+        return redirect('/user/login')
 
 
 class UploadProfile(APIView):

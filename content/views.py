@@ -1,13 +1,12 @@
 import os
 from uuid import uuid4
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from user.models import User
 from Binstragram.settings import MEDIA_ROOT
 from .models import Feed, Reply, Like, Bookmark
-
 
 # Create your views here.
 class Main(APIView):
@@ -15,13 +14,15 @@ class Main(APIView):
         email = request.session.get('email', None)
         # 로그인 없이 메인에 접근하는 경우
         if email is None:
-            return render(request, "user/login.html")
+            return redirect('/user/login/')
+            # return render(request, "user/login.html")
 
         user = User.objects.filter(email=request.session['email']).first()
 
         # 회원이 아닌 이메일 주소인 경우
         if user is None:
-            return render(request, "user/login.html")
+            return redirect('/user/login/')
+            # return render(request, "user/login.html")
 
         print(email)
         feed_object_list = Feed.objects.all().order_by('-id')  # == select * from Feed; (sql)
